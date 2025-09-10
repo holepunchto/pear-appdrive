@@ -25,6 +25,8 @@ module.exports = class AppDrive extends ReadyResource {
 
   compare = (keyA, keyB) => ref.track(this.ipc.compare({ keyA, keyB }))
 
+  list = (key, opts = {}) => ref.track(this.ipc.list({ key, ...opts }))
+
   put () { throw Error('not implemented') }
 
   del () { throw Error('not implemented') }
