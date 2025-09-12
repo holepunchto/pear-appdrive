@@ -70,7 +70,7 @@ test('AppDrive', async (t) => {
 })
 
 test('not implemented', async (t) => {
-  t.plan(8)
+  t.plan(7)
 
   const kIPC = Symbol('test.ipc')
   class API {
@@ -85,7 +85,6 @@ test('not implemented', async (t) => {
   t.exception(() => drive.put(), /not implemented/)
   t.exception(() => drive.del(), /not implemented/)
   t.exception(() => drive.symlink(), /not implemented/)
-  t.exception(() => drive.list(), /not implemented/)
   t.exception(() => drive.readdir(), /not implemented/)
   t.exception(() => drive.mirror(), /not implemented/)
   t.exception(() => drive.createReadStream(), /not implemented/)
@@ -120,26 +119,4 @@ test('checkout returns self', (t) => {
   const drive = new AppDrive()
   t.teardown(() => drive.close())
   t.is(drive.checkout(), drive)
-})
-
-test('not implemented', (t) => {
-  t.plan(8)
-
-  const kIPC = Symbol('test.ipc')
-  class API {
-    static IPC = kIPC
-    get [kIPC] () { return {} } // truthy IPC so constructor passes
-  }
-  global.Pear = new API()
-
-  const drive = new AppDrive()
-
-  t.exception(() => drive.put(), /not implemented/)
-  t.exception(() => drive.del(), /not implemented/)
-  t.exception(() => drive.symlink(), /not implemented/)
-  t.exception(() => drive.list(), /not implemented/)
-  t.exception(() => drive.readdir(), /not implemented/)
-  t.exception(() => drive.mirror(), /not implemented/)
-  t.exception(() => drive.createReadStream(), /not implemented/)
-  t.exception(() => drive.createWriteStream(), /not implemented/)
 })

@@ -3,37 +3,39 @@ const ReadyResource = require('ready-resource')
 const ref = require('pear-ref')
 
 module.exports = class AppDrive extends ReadyResource {
+  #ipc = global.Pear?.[global.Pear?.constructor.IPC]
   constructor () {
     super()
-    this.ipc = global.Pear?.[global.Pear?.constructor.IPC]
-    if (!this.ipc) throw new Error('pear-appdrive is designed for Pear - IPC missing')
+    if (!this.#ipc) throw new Error('pear-appdrive is designed for Pear - IPC missing')
   }
 
   _open () {
-    // noop, compat
+    ref.ref()
+  }
+
+  _close () {
+    ref.unref()
   }
 
   batch () { return this }
 
   checkout () { return this }
 
-  get = (key, opts = {}) => ref.track(this.ipc.get({ key, ...opts }))
+  get = (key, opts = {}) => ref.track(this.#ipc.get({ key, ...opts }))
 
-  exists = (key) => ref.track(this.ipc.exists({ key }))
+  exists = (key) => ref.track(this.#ipc.exists({ key }))
 
-  entry = (key) => ref.track(this.ipc.entry({ key }))
+  entry = (key) => ref.track(this.#ipc.entry({ key }))
 
-  compare = (keyA, keyB) => ref.track(this.ipc.compare({ keyA, keyB }))
+  compare = (keyA, keyB) => ref.track(this.#ipc.compare({ keyA, keyB }))
 
-  list = (key, opts = {}) => ref.track(this.ipc.list({ key, ...opts }))
+  list = (key, opts = {}) => ref.track(this.#ipc.list({ key, ...opts }))
 
   put () { throw Error('not implemented') }
 
   del () { throw Error('not implemented') }
 
   symlink () { throw Error('not implemented') }
-
-  list () { throw Error('not implemented') }
 
   readdir () { throw Error('not implemented') }
 
