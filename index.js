@@ -4,22 +4,27 @@ const ref = require('pear-ref')
 
 module.exports = class AppDrive extends ReadyResource {
   #ipc = global.Pear?.[global.Pear?.constructor.IPC]
-  constructor () {
+  constructor() {
     super()
-    if (!this.#ipc) throw new Error('pear-appdrive is designed for Pear - IPC missing')
+    if (!this.#ipc)
+      throw new Error('pear-appdrive is designed for Pear - IPC missing')
   }
 
-  _open () {
+  _open() {
     ref.ref()
   }
 
-  _close () {
+  _close() {
     ref.unref()
   }
 
-  batch () { return this }
+  batch() {
+    return this
+  }
 
-  checkout () { return this }
+  checkout() {
+    return this
+  }
 
   get = (key, opts = {}) => ref.track(this.#ipc.get({ key, ...opts }))
 
@@ -31,17 +36,31 @@ module.exports = class AppDrive extends ReadyResource {
 
   list = (key, opts = {}) => ref.track(this.#ipc.list({ key, ...opts }))
 
-  put () { throw Error('not implemented') }
+  put() {
+    throw Error('not implemented')
+  }
 
-  del () { throw Error('not implemented') }
+  del() {
+    throw Error('not implemented')
+  }
 
-  symlink () { throw Error('not implemented') }
+  symlink() {
+    throw Error('not implemented')
+  }
 
-  readdir () { throw Error('not implemented') }
+  readdir() {
+    throw Error('not implemented')
+  }
 
-  mirror () { throw Error('not implemented') }
+  mirror() {
+    throw Error('not implemented')
+  }
 
-  createReadStream () { throw Error('not implemented') }
+  createReadStream() {
+    throw Error('not implemented')
+  }
 
-  createWriteStream () { throw Error('not implemented') }
+  createWriteStream() {
+    throw Error('not implemented')
+  }
 }
