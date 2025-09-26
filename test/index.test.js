@@ -6,7 +6,7 @@ const IPC = require('pear-ipc')
 const { isWindows } = require('which-runtime')
 const AppDrive = require('..')
 
-function pipeId (s) {
+function pipeId(s) {
   const buf = b4a.allocUnsafe(32)
   sodium.crypto_generichash(buf, b4a.from(s))
   return b4a.toString(buf, 'hex')
@@ -20,20 +20,22 @@ test('AppDrive', async (t) => {
   t.plan(5)
 
   const kIPC = Symbol('test.ipc')
-  const socketPath = isWindows ? `\\\\.\\pipe\\test-${pipeId(__dirname)}` : __dirname + '/test.sock' // eslint-disable-line
+  const socketPath = isWindows
+    ? `\\\\.\\pipe\\test-${pipeId(__dirname)}`
+    : __dirname + '/test.sock' // eslint-disable-line
   const srv = new IPC.Server({
     socketPath,
     handlers: {
-      async get ({ key, ...opts }) {
+      async get({ key, ...opts }) {
         return { key, opts, value: `v:${key}` }
       },
-      async exists ({ key }) {
+      async exists({ key }) {
         return key === 'present'
       },
-      async entry ({ key }) {
+      async entry({ key }) {
         return { key, seq: 1 }
       },
-      async compare ({ keyA, keyB }) {
+      async compare({ keyA, keyB }) {
         return keyA.localeCompare(keyB)
       }
     }
@@ -47,7 +49,9 @@ test('AppDrive', async (t) => {
 
   class API {
     static IPC = kIPC
-    get [kIPC] () { return ipc }
+    get [kIPC]() {
+      return ipc
+    }
   }
   global.Pear = new API()
 
@@ -75,7 +79,9 @@ test('not implemented', async (t) => {
   const kIPC = Symbol('test.ipc')
   class API {
     static IPC = kIPC
-    get [kIPC] () { return {} } // truthy IPC so constructor passes
+    get [kIPC]() {
+      return {}
+    } // truthy IPC so constructor passes
   }
   global.Pear = new API()
 
@@ -97,7 +103,9 @@ test('batch returns self', (t) => {
   const kIPC = Symbol('test.ipc')
   class API {
     static IPC = kIPC
-    get [kIPC] () { return {} } // truthy IPC so constructor passes
+    get [kIPC]() {
+      return {}
+    } // truthy IPC so constructor passes
   }
   global.Pear = new API()
 
@@ -112,7 +120,9 @@ test('checkout returns self', (t) => {
   const kIPC = Symbol('test.ipc')
   class API {
     static IPC = kIPC
-    get [kIPC] () { return {} } // truthy IPC so constructor passes
+    get [kIPC]() {
+      return {}
+    } // truthy IPC so constructor passes
   }
   global.Pear = new API()
 
