@@ -6,8 +6,9 @@ module.exports = class AppDrive extends ReadyResource {
   #ipc = global.Pear?.[global.Pear?.constructor.IPC]
   constructor() {
     super()
-    if (!this.#ipc)
+    if (!this.#ipc) {
       throw new Error('pear-appdrive is designed for Pear - IPC missing')
+    }
   }
 
   _open() {
