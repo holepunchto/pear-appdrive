@@ -35,7 +35,15 @@ module.exports = class AppDrive extends ReadyResource {
 
   compare = (keyA, keyB) => ref.track(this.#ipc.compare({ keyA, keyB }))
 
-  list = (key, opts = {}) => ref.track(this.#ipc.list({ key, ...opts }))
+  list = (key, opts = {}) => {
+    ref.ref()
+    const stream = this.#ipc.list({ key, ...opts })
+    stream.once('close', () => ref.unref())
+    global.Pear.teardown(() => {
+      stream.end()
+    })
+    return stream
+  }
 
   put() {
     throw Error('not implemented')
